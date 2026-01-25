@@ -43,7 +43,7 @@ public class SucursalCotrolador {
     this.sucursalServicio.deleteSucursalById(id);
   }
 
-  @PatchMapping
+
   @PutMapping
   public void updateSucursal(@RequestBody Sucursal sucursal){
     this.sucursalServicio.updateSucursal(sucursal);

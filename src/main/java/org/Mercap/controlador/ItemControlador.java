@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/Items")
+@RequestMapping(path = "/api/items")
 public class ItemControlador {
 
   @Autowired
@@ -44,7 +44,6 @@ public class ItemControlador {
     itemServicio.deleteItem(id);
   }
 
-  @PatchMapping
   @PutMapping
   public void updateItem(@RequestBody Item item){
     this.itemServicio.updateItem(item);

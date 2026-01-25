@@ -43,7 +43,6 @@ public class VentaControlador {
     this.ventaServicio.deleteVentaById(id);
   }
 
-  @PatchMapping
   @PutMapping
   public void updateVenta(@RequestBody Venta venta){
     this.ventaServicio.updateVenta(venta);

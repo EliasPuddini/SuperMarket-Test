@@ -43,7 +43,7 @@ public class ProductoControlador {
     this.productoServicio.deleteProductoById(id);
   }
 
-  @PatchMapping
+
   @PutMapping
   public void updateProducto(@RequestBody Producto producto){
     this.productoServicio.updateProducto(producto);
