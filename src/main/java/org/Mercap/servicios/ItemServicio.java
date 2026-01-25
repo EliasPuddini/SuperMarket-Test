@@ -31,8 +31,8 @@ public class ItemServicio {
     this.itemRepositorio.deleteById(id);
   }
 
-  public ItemDTO updateItem(Long id, Item itemActualizado) {
-    return itemRepositorio.findById(id).map(item -> {
+  public ItemDTO updateItem(Item itemActualizado) {
+    return itemRepositorio.findById(itemActualizado.getId()).map(item -> {
 
       item.setProducto(itemActualizado.getProducto());
       item.setPrecio(itemActualizado.getPrecio());

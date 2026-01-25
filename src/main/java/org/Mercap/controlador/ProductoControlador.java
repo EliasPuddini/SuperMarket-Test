@@ -1,9 +1,8 @@
 package org.Mercap.controlador;
 
-import org.Mercap.DTO.ItemDTO;
-import org.Mercap.dominio.Item;
+import org.Mercap.DTO.ProductoDTO;
 import org.Mercap.dominio.Producto;
-import org.Mercap.servicios.ItemServicio;
+import org.Mercap.servicios.ProductoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,35 +17,36 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/Items")
-public class ItemControlador {
+@RequestMapping(path = "api/productos")
+public class ProductoControlador {
 
   @Autowired
-  private ItemServicio itemServicio;
+  private ProductoServicio productoServicio;
 
   @GetMapping
-  public List<ItemDTO> getList(){
-    return itemServicio.getItemsList();
+  public List<ProductoDTO> getList(){
+    return this.productoServicio.getProductoList();
   }
 
-  @GetMapping("/{itemID}")
-  public ItemDTO getById(@PathVariable("itemID")Long id){
-    return itemServicio.getItem(id);
+  @GetMapping("/{productoID}")
+  public ProductoDTO getById(@PathVariable("productoID")Long id){
+    return this.productoServicio.getProductoById(id);
   }
 
   @PostMapping
-  public void saveItem(@RequestBody Item item){
-    itemServicio.saveItem(item);
+  public void SaveProducto(@RequestBody Producto producto){
+    this.productoServicio.saveProducto(producto);
   }
 
-  @DeleteMapping("/{itemID}")
-  public void deleteItem(@PathVariable("itemID") Long id){
-    itemServicio.deleteItem(id);
+  @DeleteMapping("/productoID")
+  public void deleteProducto(@PathVariable("productoID") Long id){
+    this.productoServicio.deleteProductoById(id);
   }
 
   @PatchMapping
   @PutMapping
-  public void updateItem(@RequestBody Item item){
-    this.itemServicio.updateItem(item);
+  public void updateProducto(@RequestBody Producto producto){
+    this.productoServicio.updateProducto(producto);
   }
+
 }
