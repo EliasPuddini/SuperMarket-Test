@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f8fafc;
+    color: #475569;
+}
+
+#app {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* NAVBAR */
+navbar {
+    width: 100%;
+    margin: 0;
+    padding: 15px 30px;
+    position: sticky; /* opcional */
+    top: 0;
+    left: 0;
+    background-color: #1e3a8a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 1000;
+    position: sticky;
+}
+navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 20px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+navbar a:hover {
+    color: #93c5fd;
+}
+
+/* CONTENIDO */
+#app {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+h1 {
+    color: #1e3a8a;
+    margin-bottom: 25px;
+}
+
+/* TABLA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+thead {
+    background-color: #3b82f6;
+    color: #ffffff;
+}
+
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+}
+
+th {
+    font-weight: 600;
+}
+
+tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s;
+}
+
+tbody tr:hover {
+    background-color: #eff6ff;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+td {
+    color: #334155;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 15px;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 15px;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #1e3a8a;
+    }
+}

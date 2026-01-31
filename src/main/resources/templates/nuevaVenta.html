@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Venta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="/css/nuevaVenta.css">
+</head>
+
+<body>
+<div id="appNuevaVenta">
+
+    <header class="navbar">
+        <!-- Botón menú izquierdo -->
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+        <!-- Título centrado -->
+        <h1 class="navbar-title">SuperMarket</h1>
+
+        <!-- Botón logo derecho -->
+        <button class="logo-btn">
+            🛒
+        </button>
+    </header>
+
+    <!-- Menú desplegable -->
+    <nav class="side-menu" id="sideMenu">
+        <ul>
+            <li class="menu-section">Ventas</li>
+            <ul class="submenu">
+                <li><a href="/ventas">Ventas</a></li>
+                <li><a href="/ventas/nueva">Nueva Venta</a></li>
+            </ul>
+
+            <li class="menu-section">Productos</li>
+            <ul class="submenu">
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/productos/nuevo">Nuevo Producto</a></li>
+            </ul>
+        </ul>
+    </nav>
+
+    <h2 class="subtitle">Nueva Venta</h2>
+
+
+    <section class="card venta-form">
+
+        <!-- Sucursal -->
+        <div class="form-row">
+            <label>Sucursal:</label>
+            <select v-model="sucursalSeleccionada">
+                <option disabled value="">Seleccione sucursal</option>
+                <option v-for="s in sucursales" :key="s.id" :value="s">
+                    {{ s.nombre }}
+                </option>
+            </select>
+        </div>
+
+        <!-- Producto -->
+        <div class="form-row producto-row">
+            <label>Producto:</label>
+            <input type="text"
+                v-model="busquedaProducto"
+                @input="buscarProducto"
+                placeholder="Buscar producto">
+            <button class="icon-btn" @click="buscarProducto">🔍</button>
+        </div>
+
+        <!-- Dropdown de resultados -->
+        <div class="dropdown" v-if="productosFiltrados.length">
+            <table>
+                <tr v-for="p in productosFiltrados"
+                    :key="p.id"
+                    @click="seleccionarProducto(p)">
+                    <td>{{ p.nombre }}</td>
+                    <td>{{ p.descripcion }}</td>
+                    <td>$ {{ p.precioActual }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Cantidad -->
+        <div class="form-row">
+            <label>Cantidad:</label>
+            <input type="number" min="1" v-model.number="cantidad">
+        </div>
+
+        <!-- Agregar -->
+        <button class="add-btn" @click="agregarItem" :disabled="!puedeAgregar">
+            Agregar
+        </button>
+
+    </section>
+
+    <!-- Lista de ítems -->
+    <section class="card">
+        <h2>Items de la venta</h2>
+
+        <table v-if="items.length">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, index) in items" :key="index">
+                <td>{{ item.producto.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>$ {{ item.precioUnitario }}</td>
+                <td>$ {{ item.subtotal.toFixed(2) }}</td>
+                <td>
+                    <button class="delete-btn" @click="eliminarItem(index)">❌</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 v-if="items.length">Total: $ {{ total }}</h3>
+        <p v-else>Total: $ 0.00</p>
+    </section>
+
+    <button class="confirmar" @click="guardarVenta" :disabled="!puedeGuardar">
+        Confirmar venta
+    </button>
+
+</div>
+
+<script src="/js/nuevaVenta.js"></script>
+<script>
+    const menuBtn = document.getElementById("menuBtn");
+    const sideMenu = document.getElementById("sideMenu");
+
+    menuBtn.addEventListener("click", () => {
+        sideMenu.classList.toggle("open");
+    });
+</script>
+
+</body>
+</html>

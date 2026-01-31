@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class productoVista {
 
   @GetMapping
-  public String get(){
+  public String getAll(){
     return "productos";
   }
 

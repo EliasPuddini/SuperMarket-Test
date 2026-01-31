@@ -1,46 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-</head>
-<body>
-    <div id="app">
-        <navbar>
-            <div>
-                <a href="/home">Home</a>
-                <a href="/productos">Productos</a>
-                <a href="/contacto">Contacto</a>
-            </div>
-            <!--
-                <div>
-                    <p>Usuario: <strong>{{ usuario.nombre }}</strong></p>
-                    <p>Sucursal: <strong>{{ sucursal.nombre }}</strong></p>
-                    <a href="/logout">Cerrar Sesión</a>
-                </div>
-            -->
-        </navbar>
-        <h1>Productos</h1>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="producto in productos" :key="producto.id">
-                    <td>{{ producto.id }}</td>
-                    <td>{{ producto.nombre }}</td>
-                    <td>{{ producto.precio }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <link rel="stylesheet" href="/css/productos.css">
+</head>
+
+<body>
+<div id="app">
+
+    <header class="navbar">
+        <!-- Botón menú izquierdo -->
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+        <!-- Título centrado -->
+        <h1 class="navbar-title">SuperMarket</h1>
+
+        <!-- Botón logo derecho -->
+        <button class="logo-btn">
+            🛒
+        </button>
+    </header>
+
+    <!-- Menú desplegable -->
+    <nav class="side-menu" id="sideMenu">
+        <ul>
+            <li class="menu-section">Ventas</li>
+            <ul class="submenu">
+                <li><a href="/ventas">Ventas</a></li>
+                <li><a href="/ventas/nueva">Nueva Venta</a></li>
+            </ul>
+
+            <li class="menu-section">Productos</li>
+            <ul class="submenu">
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/productos/nuevo">Nuevo Producto</a></li>
+            </ul>
+        </ul>
+    </nav>
+
+    <h1>Productos</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="producto in productos" :key="producto.id">
+            <td data-label="Nombre">{{ producto.nombre }}</td>
+            <td data-label="Descripción">{{ producto.descripcion }}</td>
+            <td data-label="Precio">$ {{ producto.precioActual }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="/js/productos.js"></script>
 </body>
 </html>
