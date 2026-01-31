@@ -5,6 +5,7 @@ import org.Mercap.dominio.Sucursal;
 import org.Mercap.repositorios.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ public class SucursalServicio {
   private SucursalRepository sucursalRepository;
 
 
+  @Transactional(readOnly = true)
   public List<SucursalDTO> getSucursalList(){
     return this.sucursalRepository.findAll().stream().map(SucursalDTO::new).collect(Collectors.toList());
   }

@@ -13,6 +13,7 @@ public class SucursalDTO {
     List<VentaDTO> ventasDTO = VentaDTO.ventaDTOS(sucursal.getVentas());
     this.ventas = ventasDTO;
     List<ProductoDTO> productoDTOS = ProductoDTO.ProductoDTO(sucursal.getProductos());
+    this.productos = productoDTOS;
   }
 
   public Long getId() {
@@ -25,5 +26,9 @@ public class SucursalDTO {
 
   public List<VentaDTO> getVentas() {
     return ventas;
+  }
+
+  public List<ProductoDTO> getProductos() {
+    return productos;
   }
 }

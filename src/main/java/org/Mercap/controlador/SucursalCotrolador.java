@@ -25,7 +25,8 @@ public class SucursalCotrolador {
 
   @GetMapping
   public List<SucursalDTO> getList(){
-    return this.sucursalServicio.getSucursalList();
+    List<SucursalDTO> sucursalDTOS =  this.sucursalServicio.getSucursalList();
+    return sucursalDTOS;
   }
 
   @GetMapping("/{sucursalID}")

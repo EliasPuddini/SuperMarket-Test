@@ -1,5 +1,7 @@
 package org.Mercap.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -9,23 +11,31 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.UniqueConstraint;
 
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Sucursal {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String nombre;
-  @OneToMany
+  @OneToMany(mappedBy = "sucursal")
   private List<Venta> ventas;
+
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "SucursalXProducto",
       joinColumns = @JoinColumn(name = "sucursal_id"),
-      inverseJoinColumns = @JoinColumn(name = "producto_id")
+      inverseJoinColumns = @JoinColumn(name = "producto_id"),
+      uniqueConstraints = {
+          @UniqueConstraint(
+              columnNames = {"sucursal_id", "producto_id"}
+          )
+      }
   )
   private List<Producto> productos;
 
@@ -53,6 +63,7 @@ public class Sucursal {
     this.ventas = ventas;
   }
 
+  @JsonProperty("productos")
   public List<Producto> getProductos() {
     return productos;
   }
