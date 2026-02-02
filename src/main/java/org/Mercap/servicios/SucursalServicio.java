@@ -43,4 +43,8 @@ public class SucursalServicio {
       return new SucursalDTO(sucursal1);
     }).orElse(null);
   }
+
+  public boolean existSucursalByID(Long id){
+    return this.sucursalRepository.existsById(id);
+  }
 }

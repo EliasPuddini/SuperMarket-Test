@@ -4,6 +4,8 @@ import org.Mercap.DTO.SucursalDTO;
 import org.Mercap.dominio.Sucursal;
 import org.Mercap.servicios.SucursalServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,30 +26,87 @@ public class SucursalCotrolador {
   private SucursalServicio sucursalServicio;
 
   @GetMapping
-  public List<SucursalDTO> getList(){
-    List<SucursalDTO> sucursalDTOS =  this.sucursalServicio.getSucursalList();
-    return sucursalDTOS;
+  public ResponseEntity<?> getList(){
+
+    try {
+      List<SucursalDTO> sucursalDTOS =  this.sucursalServicio.getSucursalList();
+
+      if(sucursalDTOS.isEmpty()){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("No se han encontrado sucursales. ");
+      }
+
+      return ResponseEntity.status(HttpStatus.OK).body(sucursalDTOS);
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al buscar las sucursales. ");
+    }
   }
 
   @GetMapping("/{sucursalID}")
-  public SucursalDTO getById(@PathVariable("sucursalID") Long id){
-    return this.sucursalServicio.getSucursalById(id);
+  public ResponseEntity<?> getById(@PathVariable("sucursalID") Long id){
+
+    try {
+      SucursalDTO sucursalDTO = this.sucursalServicio.getSucursalById(id);
+
+      if (sucursalDTO == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("No se ha encontrado la sucursal. ");
+      }
+      return ResponseEntity.status(HttpStatus.OK)
+          .body(sucursalDTO);
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al buscar la sucursal. ");
+    }
   }
 
   @PostMapping
-  public void saveSucursal(@RequestBody Sucursal sucursal){
-    this.sucursalServicio.saveSucursal(sucursal);
+  public ResponseEntity<?> saveSucursal(@RequestBody Sucursal sucursal){
+
+    try{
+      this.sucursalServicio.saveSucursal(sucursal);
+      return ResponseEntity.status(HttpStatus.CREATED)
+          .body("Se ha creado la sucursal. ");
+    } catch (Exception e){
+      return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al crear la sucursal. ");
+    }
   }
 
   @DeleteMapping("/{sucursalID}")
-  public void deleteSucursal(@PathVariable("sucursalID") Long id){
-    this.sucursalServicio.deleteSucursalById(id);
+  public ResponseEntity<?> deleteSucursal(@PathVariable("sucursalID") Long id){
+
+    try {
+      if (!this.sucursalServicio.existSucursalByID(id)){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("No se ha encontrado la sucursal. ");
+      }
+
+      this.sucursalServicio.deleteSucursalById(id);
+      return ResponseEntity.status(HttpStatus.OK)
+          .body("Se ha eliminado la sucursal. ");
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al eliminar la sucursal. ");
+    }
   }
 
 
   @PutMapping
-  public void updateSucursal(@RequestBody Sucursal sucursal){
-    this.sucursalServicio.updateSucursal(sucursal);
-  }
+  public ResponseEntity<?> updateSucursal(@RequestBody Sucursal sucursal){
 
+    try {
+      if (!this.sucursalServicio.existSucursalByID(sucursal.getId())){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("No se ha encontrado la sucursal a editar.");
+      }
+      this.sucursalServicio.updateSucursal(sucursal);
+      return ResponseEntity.status(HttpStatus.OK)
+          .body("Se ha editado la sucursal. ");
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al editar la sucursal. ");
+    }
+  }
 }

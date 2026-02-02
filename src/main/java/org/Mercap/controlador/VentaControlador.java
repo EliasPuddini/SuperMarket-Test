@@ -1,9 +1,16 @@
 package org.Mercap.controlador;
 
+import org.Mercap.DTO.SucursalDTO;
 import org.Mercap.DTO.VentaDTO;
+import org.Mercap.dominio.Item;
+import org.Mercap.dominio.Producto;
+import org.Mercap.dominio.Sucursal;
 import org.Mercap.dominio.Venta;
+import org.Mercap.servicios.SucursalServicio;
 import org.Mercap.servicios.VentaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/ventas")
@@ -22,30 +30,97 @@ public class VentaControlador {
 
   @Autowired
   private VentaServicio ventaServicio;
+  @Autowired
+  private SucursalServicio sucursalServicio;
 
   @GetMapping
-  public List<VentaDTO> getList(){
-    return this.ventaServicio.getVentaList();
+  public ResponseEntity<?> getList(){
+
+    try{
+      List<VentaDTO> ventas = ventaServicio.getVentaList();
+      return ResponseEntity.ok(ventas);
+    }catch (Exception e){
+      return ResponseEntity.
+            status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al obtener la lista de ventas");
+    }
+
   }
 
   @GetMapping("/{ventaID}")
-  public VentaDTO getById(@PathVariable("ventaID")Long id){
-    return this.ventaServicio.getVentaById(id);
+  public ResponseEntity<?> getById(@PathVariable("ventaID")Long id){
+
+    try {
+      VentaDTO ventaDTO = this.ventaServicio.getVentaById(id);
+      return ResponseEntity.ok(ventaDTO);
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al obtener la venta de Id" + id);
+    }
   }
 
-  @PostMapping()
-  public void saveVenta(@RequestBody Venta venta){
-    this.ventaServicio.saveVenta(venta);
+  @PostMapping("/{sucursalId}")
+  public ResponseEntity<?> saveVenta(@RequestBody Venta venta, @PathVariable("sucursalId") Long id){
+    try{
+      SucursalDTO sucursalDTO = sucursalServicio.getSucursalById(id);
+
+      if (sucursalDTO == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("Sucursal no encontrada. ");
+      }
+
+      List<Producto> productosVenta = venta.getItems().stream().map(Item::getProducto).toList();
+      boolean productosValidos = sucursalDTO.getProductos()
+          .containsAll(productosVenta);
+
+      if (!productosValidos){
+        return ResponseEntity
+            .badRequest()
+            .body("La sucursal no posee todos los productos de la venta");
+      }
+      ventaServicio.saveVenta(venta);
+
+      return ResponseEntity.status(HttpStatus.CREATED).body("Venta creada correctamente.");
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al crear la venta. ");
+    }
+
   }
 
   @DeleteMapping("/{ventaID}")
-  public void deleteVenta(@PathVariable("ventaID")Long id){
-    this.ventaServicio.deleteVentaById(id);
+  public ResponseEntity<?> deleteVenta(@PathVariable("ventaID")Long id){
+
+    try{
+      if(ventaServicio.getVentaById(id) != null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("La venta no Existe. ");
+      }
+
+      ventaServicio.deleteVentaById(id);
+      return ResponseEntity.status(HttpStatus.OK)
+          .body("La venta fue eliminada. ");
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al eliminar la venta. ");
+    }
   }
 
   @PutMapping
-  public void updateVenta(@RequestBody Venta venta){
-    this.ventaServicio.updateVenta(venta);
+  public ResponseEntity<?> updateVenta(@RequestBody Venta venta){
+
+    try {
+      if (ventaServicio.getVentaById(venta.getId()) == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body("Venta no encontrada.");
+      }
+      this.ventaServicio.updateVenta(venta);
+      return ResponseEntity.status(HttpStatus.OK)
+          .body("Venta editada correctamente.");
+    } catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("Error al editar la venta. ");
+    }
   }
 
 }
