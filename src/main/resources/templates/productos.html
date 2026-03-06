@@ -7,6 +7,7 @@
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
+    <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/productos.css">
 </head>
 
@@ -14,54 +15,73 @@
 <div id="app">
 
     <header class="navbar">
-        <!-- Botón menú izquierdo -->
-        <button class="menu-btn" id="menuBtn">☰</button>
-
-        <!-- Título centrado -->
+        <button class="menu-btn" id="menuBtn" @click="toggleMenu()">☰</button>
         <h1 class="navbar-title">SuperMarket</h1>
-
-        <!-- Botón logo derecho -->
-        <button class="logo-btn">
-            🛒
-        </button>
+        <button class="logo-btn">🛒</button>
     </header>
 
-    <!-- Menú desplegable -->
-    <nav class="side-menu" id="sideMenu">
-        <ul>
-            <li class="menu-section">Ventas</li>
-            <ul class="submenu">
-                <li><a href="/ventas">Ventas</a></li>
-                <li><a href="/ventas/nueva">Nueva Venta</a></li>
+    <div class="layout">
+        <!-- Menú desplegable -->
+        <nav class="side-menu" :class="{open: menuAbierto}">
+            <ul>
+
+                <li class="menu-section">Ventas</li>
+                <ul class="submenu">
+                    <li><a href="/ventas">Ventas</a></li>
+                    <li><a href="/ventas/nuevaVenta">Nueva Venta</a></li>
+                </ul>
+
+                <li class="menu-section">Base de Datos</li>
+                <ul class="submenu">
+                    <li><a href="/productos">Productos</a></li>
+                </ul>
+
             </ul>
+        </nav>
 
-            <li class="menu-section">Productos</li>
-            <ul class="submenu">
-                <li><a href="/productos">Productos</a></li>
-                <li><a href="/productos/nuevo">Nuevo Producto</a></li>
-            </ul>
-        </ul>
-    </nav>
+        <!-- CONTENIDO -->
+        <main class="content">
 
-    <h1>Productos</h1>
+            <h1 id="titulo-tabla">Productos</h1>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="producto in productos" :key="producto.id">
-            <td data-label="Nombre">{{ producto.nombre }}</td>
-            <td data-label="Descripción">{{ producto.descripcion }}</td>
-            <td data-label="Precio">$ {{ producto.precioActual }}</td>
-        </tr>
-        </tbody>
-    </table>
+            <table>
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="producto in productos" :key="producto.id">
+                    <td data-label="Nombre">{{ producto.nombre }}</td>
+                    <td data-label="Descripción">{{ producto.descripcion }}</td>
+                    <td data-label="Precio">$ {{ producto.precioActual }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
 
+    <button class="back-btn" @click="toggleAddMenu()"> +</button>
+    
+    <div class="add-menu" :class="{open: menuAddAbierto}">
+        <div class="close-menu">
+            <h2>Agregar Producto</h2>
+            <button class="close-btn" @click="toggleAddMenu()">X</button>
+        </div>
+        
+        <form @submit.prevent="agregarProducto()">
+            <input type="text" v-model="nuevoProducto.nombre" placeholder="Nombre" required>
+            <input type="text" v-model="nuevoProducto.descripcion" placeholder="Descripción" required>
+            <input type="number" v-model.number="nuevoProducto.precioActual" placeholder="Precio" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>© 2026 SuperMarket - Sistema de ventas</p>
+    </footer>
 </div>
 
 <script src="/js/productos.js"></script>

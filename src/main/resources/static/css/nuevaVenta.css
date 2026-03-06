@@ -219,9 +219,162 @@ h3 {
 }
 
 /* =========================
+   MODAL BUSCAR PRODUCTO
+========================= */
+
+.modal-overlay {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.45);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 2000;
+}
+
+.modal-producto {
+
+    background: white;
+
+    width: 600px;
+    max-width: 90%;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+
+    animation: modalFade 0.2s ease;
+}
+
+@keyframes modalFade {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* HEADER MODAL */
+
+.modal-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+/* BOTON CERRAR */
+
+.close-btn {
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: none;
+
+    background: #ef4444;
+    color: white;
+
+    font-size: 16px;
+    line-height: 1;
+
+    cursor: pointer;
+
+}
+
+.close-btn:hover {
+    background: #dc2626;
+}
+
+/* INPUT BUSQUEDA */
+
+.modal-producto input {
+
+    width: 100%;
+
+    padding: 10px;
+
+    border-radius: 6px;
+    border: 1px solid #ccc;
+
+    margin-bottom: 12px;
+}
+
+/* TABLA PRODUCTOS */
+
+.modal-producto table {
+    width: 100%;
+}
+
+.modal-producto tr {
+    cursor: pointer;
+}
+
+.modal-producto tr:hover {
+    background: #eef2ff;
+}
+
+.descuento-input{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.descuento-input input{
+    width: 70px;
+}
+
+.paginador{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.paginador button{
+    padding: 5px 10px;
+    background: #1565c0;
+    color: white;
+    border-radius: 4px;
+}
+
+.paginador button:disabled{
+    background: #9e9e9e;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
+
     .navbar-title {
         font-size: 16px;
     }
@@ -233,4 +386,9 @@ h3 {
     .confirmar {
         font-size: 15px;
     }
+
+    .modal-producto {
+        width: 95%;
+    }
+
 }

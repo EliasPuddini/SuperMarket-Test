@@ -5,55 +5,11 @@
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #f8fafc;
-    color: #475569;
-}
-
 #app {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-/* NAVBAR */
-navbar {
     width: 100%;
-    margin: 0;
-    padding: 15px 30px;
-    position: sticky; /* opcional */
-    top: 0;
-    left: 0;
-    background-color: #1e3a8a;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 1000;
-    position: sticky;
-}
-navbar a {
-    color: #ffffff;
-    text-decoration: none;
-    margin-right: 20px;
-    font-weight: 500;
-    transition: color 0.2s;
 }
 
-navbar a:hover {
-    color: #93c5fd;
-}
-
-/* CONTENIDO */
-#app {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-h1 {
+#titulo-tabla {
     color: #1e3a8a;
     margin-bottom: 25px;
 }
@@ -124,4 +80,200 @@ td {
         font-weight: bold;
         color: #1e3a8a;
     }
+}
+
+
+/* BOTON FLOTANTE + */
+
+.back-btn{
+    position: fixed;
+
+    bottom: 30px;
+    right: 30px;
+
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+
+    background-color: #2563eb;
+    color: white;
+
+    border: none;
+
+    font-size: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 1; /* CLAVE */
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+
+    z-index: 1000;
+
+    transition: transform 0.2s, background 0.2s;
+
+    padding-bottom:3px;
+}
+
+.back-btn:hover{
+    background-color:#1e40af;
+    transform:scale(1.1);
+}
+
+
+/* MENU AGREGAR PRODUCTO (MODAL) */
+
+.add-menu{
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%) scale(0.9);
+
+    width: 400px;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+
+    z-index: 1100;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: all 0.25s ease;
+}
+
+
+/* CUANDO ESTA ABIERTO */
+
+.add-menu.open{
+
+    opacity: 1;
+
+    transform: translate(-50%, -50%) scale(1);
+
+    pointer-events: all;
+
+}
+
+
+/* TITULO */
+
+.add-menu h2{
+
+    color:#1e3a8a;
+
+    margin-bottom:20px;
+
+}
+
+
+/* INPUTS */
+
+.add-menu input{
+
+    width:100%;
+
+    padding:10px;
+
+    margin-bottom:12px;
+
+    border-radius:6px;
+
+    border:1px solid #d1d5db;
+
+    font-size:14px;
+
+}
+
+
+/* BOTON AGREGAR */
+
+.add-menu button{
+
+    width:100%;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.add-menu button:hover{
+
+    background:#1e40af;
+
+}
+
+/* HEADER DEL MODAL */
+
+.close-menu{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* TITULO */
+
+.close-menu h2{
+    margin: 0;
+    font-size: 22px;
+    color: #1e3a8a;
+}
+
+/* BOTON CERRAR */
+
+.close-btn{
+    display: inline-flex;
+
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+    max-width: 32px;
+
+    background: #ef4444;
+    color: white;
+
+    border: none;
+    border-radius: 50%;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    padding: 0;
+}
+
+.close-btn:hover{
+    background:#dc2626;
 }

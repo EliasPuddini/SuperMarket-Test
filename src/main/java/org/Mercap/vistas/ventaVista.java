@@ -16,7 +16,7 @@ public class ventaVista {
 
   @GetMapping("/{ventaId}")
   public String get(@PathVariable("ventaId") Long id){
-    return "venta";
+    return "ventas";
   }
 
   @GetMapping("/nuevaVenta")

@@ -9,7 +9,12 @@ createApp({
             busquedaProducto: "",
             productoSeleccionado: null,
             cantidad: 1,
-            items: []
+            items: [],
+            mostrarModalProducto: false,
+            productoSeleccionado: null,
+            // PAGINACIÓN
+            paginaActual: 1,
+            productosPorPagina: 5
         }
     },
     mounted() {
@@ -81,6 +86,32 @@ createApp({
             console.log("Confirmar venta clickeado");
 
             //TODO
+        },
+        abrirBusquedaProducto(){
+            this.mostrarModalProducto = true
+        },
+        seleccionarProducto(producto){
+            this.productoSeleccionado = producto
+            this.busquedaProducto = producto.nombre
+            this.mostrarModalProducto = false
+        },
+        recalcularItem(item) {
+            const cantidad = item.cantidad || 0;
+            const precio = item.precioUnitario || 0;
+            const descuento = item.descuento || 0;
+
+            item.subtotal = (cantidad * precio) - ((cantidad * precio) * (descuento / 100));
+        },
+        siguientePagina() {
+            if(this.paginaActual < this.totalPaginas){
+                this.paginaActual++
+            }
+        },
+
+        paginaAnterior() {
+            if(this.paginaActual > 1){
+                this.paginaActual--
+            }
         }
 
     },
@@ -102,6 +133,15 @@ createApp({
                 this.sucursalSeleccionada !== null &&
                 this.sucursalSeleccionada !== ""
             );
+        },
+        productosPaginados() {
+            const inicio = (this.paginaActual - 1) * this.productosPorPagina
+            const fin = inicio + this.productosPorPagina
+            return this.productosFiltrados.slice(inicio, fin)
+        },
+
+        totalPaginas() {
+            return Math.ceil(this.productosFiltrados.length / this.productosPorPagina)
         }
     }
 }).mount('#appNuevaVenta');

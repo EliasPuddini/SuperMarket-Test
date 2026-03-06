@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/nuevaVenta.css">
 </head>
 
@@ -63,22 +64,66 @@
             <label>Producto:</label>
             <input type="text"
                 v-model="busquedaProducto"
-                @input="buscarProducto"
+                @focus="abrirBusquedaProducto"
                 placeholder="Buscar producto">
             <button class="icon-btn" @click="buscarProducto">🔍</button>
         </div>
 
-        <!-- Dropdown de resultados -->
-        <div class="dropdown" v-if="productosFiltrados.length">
-            <table>
-                <tr v-for="p in productosFiltrados"
-                    :key="p.id"
-                    @click="seleccionarProducto(p)">
-                    <td>{{ p.nombre }}</td>
-                    <td>{{ p.descripcion }}</td>
-                    <td>$ {{ p.precioActual }}</td>
-                </tr>
-            </table>
+        <!-- MODAL BUSQUEDA PRODUCTO -->
+        <div class="modal-overlay" v-if="mostrarModalProducto">
+
+            <div class="modal-producto">
+
+                <div class="modal-header">
+                    <h3>Buscar producto</h3>
+                    <button class="close-btn" @click="mostrarModalProducto=false">✕</button>
+                </div>
+
+                <input
+                    type="text"
+                    v-model="busquedaProducto"
+                    @input="buscarProducto"
+                    placeholder="Escriba el nombre del producto"
+                >
+
+                <table v-if="productosPaginados.length">
+                    <tr v-for="p in productosPaginados"
+                        :key="p.id"
+                        @click="seleccionarProducto(p)">
+
+                        <td>{{ p.nombre }}</td>
+                        <td>{{ p.descripcion }}</td>
+                        <td>$ {{ p.precioActual }}</td>
+
+                    </tr>
+                </table>
+
+
+                <p v-if="!productosFiltrados.length">
+                    No se encontraron productos
+                </p>
+                <!-- PAGINADOR -->
+                <div class="paginador" v-if="totalPaginas > 1">
+
+                    <button 
+                        @click="paginaActual--" 
+                        :disabled="paginaActual === 1">
+                        ◀
+                    </button>
+
+                    <span>
+                        Página {{ paginaActual }} de {{ totalPaginas }}
+                    </span>
+
+                    <button 
+                        @click="paginaActual++" 
+                        :disabled="paginaActual === totalPaginas">
+                        ▶
+                    </button>
+
+                </div>
+            </div>
+
         </div>
 
         <!-- Cantidad -->
@@ -102,22 +147,67 @@
             <thead>
             <tr>
                 <th>Producto</th>
+                <th>Descripción</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Descuento</th>
                 <th>Subtotal</th>
                 <th>Acciones</th>
             </tr>
             </thead>
+
             <tbody>
-            <tr v-for="(item, index) in items" :key="index">
-                <td>{{ item.producto.nombre }}</td>
-                <td>{{ item.cantidad }}</td>
-                <td>$ {{ item.precioUnitario }}</td>
-                <td>$ {{ item.subtotal.toFixed(2) }}</td>
-                <td>
-                    <button class="delete-btn" @click="eliminarItem(index)">❌</button>
-                </td>
-            </tr>
+                <tr v-for="(item, index) in items" :key="index">
+
+                    <td>{{ item.producto.nombre }}</td>
+
+                    <td>{{ item.producto.descripcion }}</td>
+
+                    <!-- CANTIDAD -->
+                    <td>
+                        <input
+                            type="number"
+                            min="1"
+                            v-model.number="item.cantidad"
+                            @input="recalcularItem(item)"
+                        >
+                    </td>
+
+                    <!-- PRECIO -->
+                    <td>
+                        <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            v-model.number="item.precioUnitario"
+                            @input="recalcularItem(item)"
+                        >
+                    </td>
+
+                    <!-- DESCUENTO % -->
+                    <td>
+                        <div class="descuento-input">
+                            <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                v-model.number="item.descuento"
+                                @input="recalcularItem(item)"
+                            >
+                            <span>%</span>
+                        </div>
+                    </td>
+
+                    <!-- SUBTOTAL -->
+                    <td>
+                        $ {{ item.subtotal.toFixed(2) }}
+                    </td>
+
+                    <td>
+                        <button class="delete-btn" @click="eliminarItem(index)">❌</button>
+                    </td>
+
+                </tr>
             </tbody>
         </table>
 
@@ -140,6 +230,9 @@
         sideMenu.classList.toggle("open");
     });
 </script>
+    <footer>
+        <p>© 2026 SuperMarket - Sistema de ventas</p>
+    </footer>
 
 </body>
 </html>
