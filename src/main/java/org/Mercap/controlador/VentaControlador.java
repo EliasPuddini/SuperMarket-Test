@@ -1,5 +1,6 @@
 package org.Mercap.controlador;
 
+import org.Mercap.DTO.ProductoDTO;
 import org.Mercap.DTO.SucursalDTO;
 import org.Mercap.DTO.VentaDTO;
 import org.Mercap.dominio.Item;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -62,6 +64,7 @@ public class VentaControlador {
   @PostMapping("/{sucursalId}")
   public ResponseEntity<?> saveVenta(@RequestBody Venta venta, @PathVariable("sucursalId") Long id){
     try{
+
       SucursalDTO sucursalDTO = sucursalServicio.getSucursalById(id);
 
       if (sucursalDTO == null){
@@ -69,9 +72,13 @@ public class VentaControlador {
             .body("Sucursal no encontrada. ");
       }
 
-      List<Producto> productosVenta = venta.getItems().stream().map(Item::getProducto).toList();
-      boolean productosValidos = sucursalDTO.getProductos()
-          .containsAll(productosVenta);
+      Set<Long> productosSucursalIds = sucursalDTO.getProductos()
+          .stream()
+          .map(ProductoDTO::getId)
+          .collect(Collectors.toSet());
+
+      boolean productosValidos = venta.getItems().stream()
+          .allMatch(item -> productosSucursalIds.contains(item.getProducto().getId()));
 
       if (!productosValidos){
         return ResponseEntity

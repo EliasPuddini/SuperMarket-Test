@@ -4,6 +4,8 @@ import org.Mercap.DTO.ProductoDTO;
 import org.Mercap.dominio.Producto;
 import org.Mercap.servicios.ProductoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +33,18 @@ public class ProductoControlador {
   @GetMapping("/{productoID}")
   public ProductoDTO getById(@PathVariable("productoID")Long id){
     return this.productoServicio.getProductoById(id);
+  }
+
+  @GetMapping("sucursal/{sucursalID}")
+  public ResponseEntity<?> getProductoBySucursal(@PathVariable("sucursalID") Long id){
+    try {
+
+      List<ProductoDTO> productoDTOS = this.productoServicio.getProductoBySucursal(id);
+      return ResponseEntity.status(HttpStatus.OK).body(productoDTOS);
+
+    }catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al buscar productos en la sucursal " + id);
+    }
   }
 
   @PostMapping

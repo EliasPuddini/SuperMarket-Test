@@ -2,6 +2,8 @@ package org.Mercap.servicios;
 
 import org.Mercap.DTO.VentaDTO;
 import org.Mercap.dominio.Venta;
+import org.Mercap.repositorios.ItemRepositorio;
+import org.Mercap.repositorios.ProductoRepository;
 import org.Mercap.repositorios.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class VentaServicio {
 
   @Autowired
   private VentaRepository ventaRepository;
+  @Autowired
+  private ItemRepositorio itemRepository;
 
   public List<VentaDTO> getVentaList(){
     return this.ventaRepository.findAll().stream().map(VentaDTO::new).collect(Collectors.toList());
@@ -24,6 +28,9 @@ public class VentaServicio {
   }
 
   public void saveVenta(Venta venta){
+    venta.getItems().stream().forEach(item -> {
+      this.itemRepository.save(item);
+    });
     this.ventaRepository.save(venta);
   }
 

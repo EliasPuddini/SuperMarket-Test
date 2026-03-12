@@ -1,0 +1,208 @@
+/* TITULO */
+
+#titulo-tabla{
+    margin-bottom:20px;
+    font-size:28px;
+    color:#0d47a1;
+}
+
+
+/* TABLA */
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+    background:white;
+
+    border-radius:8px;
+    overflow:hidden;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+/* HEADER TABLA */
+
+thead{
+
+    background:#1565c0;
+    color:white;
+
+}
+
+thead th{
+
+    padding:14px;
+    text-align:left;
+    font-weight:600;
+    font-size:15px;
+
+}
+
+
+/* FILAS */
+
+tbody tr{
+
+    border-bottom:1px solid #eee;
+
+    transition:background 0.2s;
+
+}
+
+tbody tr:hover{
+    background:#f1f5fb;
+}
+
+
+/* CELDAS */
+
+td{
+
+    padding:12px 14px;
+    font-size:14px;
+}
+
+
+/* COLUMNA TOTAL */
+
+td[data-label="Total"]{
+
+    font-weight:bold;
+    color:#2e7d32;
+
+}
+
+
+/* ACCIONES */
+
+td[data-label="Acciones"]{
+
+    display:flex;
+    gap:10px;
+
+}
+
+
+/* BOTONES ACCION */
+
+td[data-label="Acciones"] button{
+
+    border:none;
+    cursor:pointer;
+
+    font-size:16px;
+
+    width:36px;
+    height:36px;
+
+    border-radius:6px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:all 0.2s;
+
+}
+
+
+/* VER DETALLE */
+
+td[data-label="Acciones"] button:first-child{
+
+    background:#e3f2fd;
+    color:#1565c0;
+
+}
+
+td[data-label="Acciones"] button:first-child:hover{
+
+    background:#1565c0;
+    color:white;
+
+}
+
+
+/* ELIMINAR */
+
+td[data-label="Acciones"] button:last-child{
+
+    background:#ffebee;
+    color:#c62828;
+
+}
+
+td[data-label="Acciones"] button:last-child:hover{
+
+    background:#c62828;
+    color:white;
+
+}
+
+
+/* ICONOS */
+
+td[data-label="Acciones"] button:first-child::before{
+    content:"🔍";
+}
+
+td[data-label="Acciones"] button:last-child::before{
+    content:"🗑";
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width:800px){
+
+    table, thead, tbody, th, td, tr{
+        display:block;
+    }
+
+    thead{
+        display:none;
+    }
+
+    tbody tr{
+
+        background:white;
+
+        margin-bottom:15px;
+
+        border-radius:8px;
+
+        box-shadow:0 2px 6px rgba(0,0,0,0.1);
+
+        padding:10px;
+
+    }
+
+    td{
+
+        display:flex;
+        justify-content:space-between;
+
+        padding:10px;
+
+        border-bottom:1px solid #eee;
+
+    }
+
+    td::before{
+
+        content:attr(data-label);
+
+        font-weight:bold;
+
+        color:#0d47a1;
+
+    }
+
+    td:last-child{
+        border-bottom:none;
+    }
+
+}

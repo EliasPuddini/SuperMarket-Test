@@ -45,4 +45,12 @@ public class Venta {
   public void setItems(List<Item> items) {
     this.items = items;
   }
+
+  public Sucursal getSucursal() {
+    return sucursal;
+  }
+
+  public void setSucursal(Sucursal sucursal) {
+    this.sucursal = sucursal;
+  }
 }

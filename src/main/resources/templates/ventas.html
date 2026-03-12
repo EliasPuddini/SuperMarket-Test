@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/ventas.css">
+</head>
+<body>
+    <div id="app">
+        <header class="navbar">
+            <button class="menu-btn" id="menuBtn" @click="toggleMenu()">☰</button>
+            <h1 class="navbar-title">SuperMarket</h1>
+            <button class="logo-btn">🛒</button>
+        </header>
+
+        <div class="layout">
+            <!-- Menú desplegable -->
+            <nav class="side-menu" :class="{open: menuAbierto}">
+                <ul>
+
+                    <li class="menu-section">Ventas</li>
+                    <ul class="submenu">
+                        <li><a href="/ventas">Ventas</a></li>
+                        <li><a href="/ventas/nuevaVenta">Nueva Venta</a></li>
+                    </ul>
+
+                    <li class="menu-section">Base de Datos</li>
+                    <ul class="submenu">
+                        <li><a href="/productos">Productos</a></li>
+                    </ul>
+
+                </ul>
+            </nav>
+
+            <!-- CONTENIDO -->
+            <main class="content">
+
+                <h1 id="titulo-tabla">Ventas</h1>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>fecha</th>
+                            <th>Sucursal</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="venta in ventas" :key="venta.id">
+                            <td data-label="fecha">{{ venta.fecha }}</td>
+                            <td data-label="sucursal">{{venta.sucursal}}</td>
+                            <td data-label="Total">$ {{ venta.total }}</td>
+                            <td data-label="Acciones">
+                                <button @click="verDetalles(venta)"></button>
+                                <button @click="eliminarVenta(venta.id)"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </main>
+        </div>
+        <footer>
+            <p>© 2026 SuperMarket - Sistema de ventas</p>
+        </footer>
+    </div>
+    <script src="/js/ventas.js"></script>
+</body>
+</html>

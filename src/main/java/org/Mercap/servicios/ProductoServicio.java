@@ -3,6 +3,7 @@ package org.Mercap.servicios;
 import org.Mercap.DTO.ProductoDTO;
 import org.Mercap.dominio.Producto;
 import org.Mercap.repositorios.ProductoRepository;
+import org.Mercap.repositorios.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,4 +43,8 @@ public class ProductoServicio {
     }).orElse(null);
   }
 
+  public List<ProductoDTO> getProductoBySucursal(Long id){
+    List<Producto> productos = this.productoRepository.findBySucursal(id);
+    return productos.stream().map(ProductoDTO::new).collect(Collectors.toList());
+  }
 }

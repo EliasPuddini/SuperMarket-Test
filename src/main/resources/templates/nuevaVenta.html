@@ -29,17 +29,18 @@
     <!-- Menú desplegable -->
     <nav class="side-menu" id="sideMenu">
         <ul>
+
             <li class="menu-section">Ventas</li>
             <ul class="submenu">
                 <li><a href="/ventas">Ventas</a></li>
-                <li><a href="/ventas/nueva">Nueva Venta</a></li>
+                <li><a href="/ventas/nuevaVenta">Nueva Venta</a></li>
             </ul>
 
-            <li class="menu-section">Productos</li>
+            <li class="menu-section">Base de Datos</li>
             <ul class="submenu">
                 <li><a href="/productos">Productos</a></li>
-                <li><a href="/productos/nuevo">Nuevo Producto</a></li>
             </ul>
+
         </ul>
     </nav>
 
@@ -48,27 +49,61 @@
 
     <section class="card venta-form">
 
-        <!-- Sucursal -->
-        <div class="form-row">
-            <label>Sucursal:</label>
-            <select v-model="sucursalSeleccionada">
-                <option disabled value="">Seleccione sucursal</option>
-                <option v-for="s in sucursales" :key="s.id" :value="s">
-                    {{ s.nombre }}
-                </option>
-            </select>
-        </div>
+        <div class="venta-flex">
 
-        <!-- Producto -->
-        <div class="form-row producto-row">
-            <label>Producto:</label>
-            <input type="text"
-                v-model="busquedaProducto"
-                @focus="abrirBusquedaProducto"
-                placeholder="Buscar producto">
-            <button class="icon-btn" @click="buscarProducto">🔍</button>
-        </div>
+            <!-- Sucursal -->
+            <div class="campo campo-sucursal">
+                <label>Sucursal</label>
+                <select v-model="sucursalSeleccionada">
+                    <option disabled value="">Seleccione sucursal</option>
+                    <option v-for="s in sucursales" :key="s.id" :value="s">
+                        {{ s.nombre }}
+                    </option>
+                </select>
+            </div>
 
+            <div class="linea-producto"> <!-- este div es para agregar flexibilidad al diseño de selección de la línea de productos -->
+
+                <div class="campo-producto">
+                    <label>Producto</label>
+                    <div class="producto-input">
+                        <input type="text"
+                            v-model="busquedaProducto"
+                            placeholder="Buscar producto"
+                            readonly>
+
+                        <button class="btn-buscar" @click="abrirBusquedaProducto">
+                            🔍
+                        </button>
+                    </div>
+                </div>
+
+                <div class="campo-cantidad">
+                    <label>Cantidad</label>
+                    <input type="number" v-model.number="cantidad" min="1">
+                </div>
+
+                <div class="campo-descuento">
+                    <label>Descuento %</label>
+                    <div class="descuento-box">
+                        <input type="number" v-model.number="descuento" min="0">
+                        <span>%</span>
+                    </div>
+                </div>
+
+                <div class="campo-total">
+                    <label>Total</label>
+                    <input type="text" :value="totalProducto" readonly>
+                </div>
+
+                <div class="campo-agregar">
+                    <button class="btn-agregar" @click="agregarItem" :disabled="!puedeAgregar">
+                        Agregar
+                    </button>
+                </div>
+
+            </div>
+        </div>
         <!-- MODAL BUSQUEDA PRODUCTO -->
         <div class="modal-overlay" v-if="mostrarModalProducto">
 
@@ -125,17 +160,6 @@
             </div>
 
         </div>
-
-        <!-- Cantidad -->
-        <div class="form-row">
-            <label>Cantidad:</label>
-            <input type="number" min="1" v-model.number="cantidad">
-        </div>
-
-        <!-- Agregar -->
-        <button class="add-btn" @click="agregarItem" :disabled="!puedeAgregar">
-            Agregar
-        </button>
 
     </section>
 
